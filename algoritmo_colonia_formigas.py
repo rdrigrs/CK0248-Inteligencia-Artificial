@@ -1,5 +1,4 @@
 import random
-
 import numpy as np
 
 d = [
@@ -22,8 +21,11 @@ d = [
 
 def calcula_probabilidade(feromonio, visibilidade, alpha, beta):
     probabilidade = np.multiply(np.power(feromonio, alpha), np.power(visibilidade, beta))
-    probabilidade = np.divide(probabilidade, np.sum(probabilidade), where=np.sum(probabilidade) != 0)
-    np.fill_diagonal(probabilidade, 0)
+    probabilidade_sum = np.sum(probabilidade)
+    if probabilidade_sum == 0:
+        probabilidade = np.zeros_like(probabilidade)
+    else:
+        probabilidade = np.divide(probabilidade, probabilidade_sum)
     return probabilidade
 
 def atualiza_feromonio(feromonio, caminhos, custos, evap_rate):
@@ -36,7 +38,6 @@ def atualiza_feromonio(feromonio, caminhos, custos, evap_rate):
         feromonio[caminhos[i][-1]][caminhos[i][0]] += 1 / custos[i]
     return feromonio
 
-
 def iteration(feromonio, visibilidade, alpha, beta, n_cities, n_ants):
     caminhos = []
     custos = []
@@ -46,6 +47,13 @@ def iteration(feromonio, visibilidade, alpha, beta, n_cities, n_ants):
         custo = 0
         for k in range(n_cities - 1):
             probabilidade = calcula_probabilidade(feromonio[cidade_atual], visibilidade[cidade_atual], alpha, beta)
+            probabilidade[cidade_atual] = 0  # Evita escolher a mesma cidade
+            probabilidade_sum = np.sum(probabilidade)
+            if probabilidade_sum == 0:
+                probabilidade = np.ones(n_cities) / (n_cities - 1)
+                probabilidade[cidade_atual] = 0
+            else:
+                probabilidade = probabilidade / probabilidade_sum  # Re-normaliza as probabilidades
             cidade_atual = np.random.choice(n_cities, 1, p=probabilidade)[0]
             caminho.append(cidade_atual)
             custo += d[caminho[-2]][caminho[-1]]
@@ -56,7 +64,8 @@ def iteration(feromonio, visibilidade, alpha, beta, n_cities, n_ants):
 
 def colonia_formigas(n_ants, n_cities, alpha, beta, evap_rate, n_iterations):
     feromonio = np.ones((n_cities, n_cities))
-    visibilidade = np.divide(1, d)
+    visibilidade = np.divide(1, d, where=d!=0)
+    np.fill_diagonal(visibilidade, 0)  # Define a visibilidade para a própria cidade como zero
     caminhos = []
     custos = []
     for i in range(n_iterations):
@@ -67,7 +76,8 @@ def colonia_formigas(n_ants, n_cities, alpha, beta, evap_rate, n_iterations):
 
 def colonia_formigas_analitico(n_ants, n_cities, alpha, beta, evap_rate, n_iterations):
     feromonio = np.ones((n_cities, n_cities))
-    visibilidade = np.divide(1, d)
+    visibilidade = np.divide(1, d, where=d!=0)
+    np.fill_diagonal(visibilidade, 0)  # Define a visibilidade para a própria cidade como zero
     caminhos = []
     custos = []
     for i in range(n_iterations):
