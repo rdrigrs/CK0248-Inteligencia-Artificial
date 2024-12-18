@@ -1,0 +1,20 @@
+Para a utilização do código, basta a execução
+do arquivo main.py. O código irá gerar saídas
+no terminal.
+
+Após algumas execuções observa-se uma
+maior eficácia do algoritmo colônia de formigas
+em relação ao algoritmo genético.
+
+Quando fazemos algumas alterações no código,
+como por exemplo, aumentar o número de formigas
+ou o número de iterações, o algoritmo colônia de
+formigas se torna ainda mais eficaz.
+
+O algoritmo genético, por sua vez, também se
+torna mais eficaz quando aumentamos o número de
+gerações ou o número de indivíduos.
+
+Portanto, a escolha do algoritmo a ser utilizado
+depende do problema a ser resolvido e da quantidade
+de recursos disponíveis para a execução do algoritmo.
