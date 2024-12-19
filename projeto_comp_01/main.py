@@ -20,8 +20,8 @@
     de formigas reais, onde as formigas artificiais constroem soluções para o problema
     através de um processo de busca local e global.
 """
-from algoritmo_colonia_formigas import colonia_formigas_analitico
-from algoritmo_genetico import analytics_genetic_algorithm
+from projeto_comp_01.algoritmo_colonia_formigas import colonia_formigas_analitico
+from projeto_comp_01.algoritmo_genetico import analytics_genetic_algorithm
 
 
 # distâncias entre as cidades
